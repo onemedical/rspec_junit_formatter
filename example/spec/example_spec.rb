@@ -48,4 +48,10 @@ describe "some example specs" do
     $stdout.puts "Test"
     $stderr.puts "Bar"
   end
+
+  context "when nested example group is used" do
+    it "fetches a correct line number" do
+      expect(54).to eql 54
+    end
+  end
 end

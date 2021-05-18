@@ -53,6 +53,24 @@ describe RspecJunitFormatter do
   let(:shared_testcases) { doc.xpath("/testsuite/testcase[contains(@name, 'shared example')]") }
   let(:failed_shared_testcases) { doc.xpath("/testsuite/testcase[contains(@name, 'shared example')][failure]") }
 
+  let(:testcases_line_numbers) do
+    {
+      "some example specs should succeed" => 5,
+      "some example specs should fail" => 9,
+      "some example specs should raise" => 13,
+      "some example specs should be pending" => 17,
+      "some example specs shows diffs cleanly" => 25,
+      "some example specs replaces naughty \\0 and \\e characters, \\x01 and \\uFFFF too" => 29,
+      "some example specs escapes controlling  characters" => 33,
+      "some example specs can include unicodes 😁" => 37,
+      "some example specs escapes <html tags='correctly' and=\"such &amp; such\">" => 41,
+      "some example specs can capture stdout and stderr" => 47,
+      "some example specs it should behave like shared examples in a shared example succeeds" => 3,
+      "some example specs it should behave like shared examples in a shared example also fails" => 7,
+      "some example specs when nested example group is used fetches a correct line number" => 53
+    }
+  end
+
   # Combined into a single example so we don't have to re-run the example rspec
   # process over and over. (We need to change the parameters in later specs so
   # we can't use before(:all).)
@@ -63,7 +81,7 @@ describe RspecJunitFormatter do
     expect(testsuite).not_to be(nil)
 
     expect(testsuite["name"]).to eql("rspec")
-    expect(testsuite["tests"]).to eql("12")
+    expect(testsuite["tests"]).to eql("13")
     expect(testsuite["skipped"]).to eql("1")
     expect(testsuite["failures"]).to eql("8")
     expect(testsuite["errors"]).to eql("0")
@@ -73,18 +91,20 @@ describe RspecJunitFormatter do
 
     # it has some test cases
 
-    expect(testcases.size).to eql(12)
+    expect(testcases.size).to eql(13)
 
     testcases.each do |testcase|
       expect(testcase["classname"]).to eql("spec.example_spec")
       expect(testcase["name"]).not_to be_empty
       expect(testcase["file"]).to eql("./spec/example_spec.rb")
+      expect(testcase["line_number"].to_i).to be > 0
+      expect(testcase["line_number"].to_i).to eq testcases_line_numbers[testcase["name"]]
       expect(testcase["time"].to_f).to be > 0
     end
 
     # it has successful test cases
 
-    expect(successful_testcases.size).to eql(3)
+    expect(successful_testcases.size).to eql(4)
 
     successful_testcases.each do |testcase|
       expect(testcase).not_to be(nil)
