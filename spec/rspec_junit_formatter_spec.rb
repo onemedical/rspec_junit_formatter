@@ -65,8 +65,8 @@ describe RspecJunitFormatter do
       "some example specs can include unicodes 😁" => 37,
       "some example specs escapes <html tags='correctly' and=\"such &amp; such\">" => 41,
       "some example specs can capture stdout and stderr" => 47,
-      "some example specs it should behave like shared examples in a shared example succeeds" => 3,
-      "some example specs it should behave like shared examples in a shared example also fails" => 7,
+      "some example specs it should behave like shared examples in a shared example succeeds" => 45,
+      "some example specs it should behave like shared examples in a shared example also fails" => 45,
       "some example specs when nested example group is used fetches a correct line number" => 53
     }
   end

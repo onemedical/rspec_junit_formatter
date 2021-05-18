@@ -67,7 +67,12 @@ private
   end
 
   def line_number_for(notification)
-    notification.example.metadata[:line_number]
+    shared_example_meta = notification.example.metadata[:shared_group_inclusion_backtrace]
+    if shared_example_meta.empty?
+      notification.example.metadata[:line_number]
+    else
+      shared_example_meta.first.formatted_inclusion_location.split(':').last
+    end
   end
 
   def classname_for(notification)

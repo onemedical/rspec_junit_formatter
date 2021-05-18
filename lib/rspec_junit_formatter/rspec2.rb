@@ -28,6 +28,7 @@ private
   end
 
   def line_number_for(example)
+    # needs update to support shared_examples
     meta = example.metadata
     while meta[:example_group]
       meta = meta[:example_group]
