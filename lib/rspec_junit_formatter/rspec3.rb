@@ -71,7 +71,7 @@ private
     if shared_example_meta.empty?
       notification.example.metadata[:line_number]
     else
-      shared_example_meta.first.formatted_inclusion_location.split(':').last
+      shared_example_meta.first.formatted_inclusion_location&.split(':')&.last
     end
   end
 
